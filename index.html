@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bruno Rassat – Data Portfolio</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -48,38 +48,12 @@
       margin-bottom: 1rem;
       border-radius: 8px;
     }
-    .cube-container {
-      perspective: 800px;
-      width: 200px;
-      height: 200px;
-      margin: 3rem auto;
+    .chart-container {
+      background: #222;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-radius: 8px;
     }
-    .cube {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: spin 10s infinite linear;
-    }
-    .face {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: rgba(0, 123, 255, 0.7);
-      border: 1px solid #007bff;
-    }
-    .front  { transform: translateZ(100px); }
-    .back   { transform: rotateY(180deg) translateZ(100px); }
-    .right  { transform: rotateY(90deg) translateZ(100px); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); }
-    .top    { transform: rotateX(90deg) translateZ(100px); }
-    .bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-    @keyframes spin {
-      0%   { transform: rotateX(0deg) rotateY(0deg); }
-      100% { transform: rotateX(360deg) rotateY(360deg); }
-    }
-
     footer {
       text-align: center;
       padding: 2rem;
@@ -96,7 +70,7 @@
   <nav>
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
-    <a href="#cube">Cube</a>
+    <a href="#charts">Visuals</a>
     <a href="resume.pdf">Resume</a>
   </nav>
 
@@ -118,17 +92,15 @@
       </div>
     </section>
 
-    <section id="cube">
-      <h2>Spinning Cube</h2>
-      <div class="cube-container">
-        <div class="cube">
-          <div class="face front"></div>
-          <div class="face back"></div>
-          <div class="face right"></div>
-          <div class="face left"></div>
-          <div class="face top"></div>
-          <div class="face bottom"></div>
-        </div>
+    <section id="charts">
+      <h2>Visuals</h2>
+      <div class="chart-container">
+        <h3>Interactive Bar Chart</h3>
+        <svg id="bar-chart" width="600" height="300"></svg>
+      </div>
+      <div class="chart-container">
+        <h3>Pie Chart</h3>
+        <svg id="pie-chart" width="300" height="300"></svg>
       </div>
     </section>
   </div>
@@ -140,5 +112,78 @@
       <a href="https://github.com/yourusername" style="color: #00aaff">GitHub</a>
     </p>
   </footer>
+
+  <script>
+    // Bar Chart Data
+    const barData = [
+      { name: "Project A", value: 80 },
+      { name: "Project B", value: 55 },
+      { name: "Project C", value: 70 },
+      { name: "Project D", value: 95 }
+    ];
+
+    const barSvg = d3.select("#bar-chart"),
+          barMargin = { top: 20, right: 20, bottom: 30, left: 40 },
+          barWidth = +barSvg.attr("width") - barMargin.left - barMargin.right,
+          barHeight = +barSvg.attr("height") - barMargin.top - barMargin.bottom,
+          barG = barSvg.append("g").attr("transform", `translate(${barMargin.left},${barMargin.top})`);
+
+    const x = d3.scaleBand().rangeRound([0, barWidth]).padding(0.1).domain(barData.map(d => d.name));
+    const y = d3.scaleLinear().rangeRound([barHeight, 0]).domain([0, d3.max(barData, d => d.value)]);
+
+    barG.append("g")
+      .attr("transform", `translate(0,${barHeight})`)
+      .call(d3.axisBottom(x));
+
+    barG.append("g")
+      .call(d3.axisLeft(y));
+
+    barG.selectAll(".bar")
+      .data(barData)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", d => x(d.name))
+      .attr("y", d => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", d => barHeight - y(d.value))
+      .attr("fill", "#00aaff");
+
+    // Pie Chart Data
+    const pieData = [
+      { label: "Analytics", value: 40 },
+      { label: "Engineering", value: 35 },
+      { label: "Strategy", value: 25 }
+    ];
+
+    const pieRadius = 150;
+    const pieSvg = d3.select("#pie-chart")
+      .attr("width", pieRadius * 2)
+      .attr("height", pieRadius * 2)
+      .append("g")
+      .attr("transform", `translate(${pieRadius},${pieRadius})`);
+
+    const arc = d3.arc()
+      .innerRadius(0)
+      .outerRadius(pieRadius - 10);
+
+    const pie = d3.pie()
+      .value(d => d.value);
+
+    const g = pieSvg.selectAll(".arc")
+      .data(pie(pieData))
+      .enter().append("g")
+      .attr("class", "arc");
+
+    g.append("path")
+      .attr("d", arc)
+      .attr("fill", (d, i) => d3.schemeCategory10[i]);
+
+    g.append("text")
+      .attr("transform", d => `translate(${arc.centroid(d)})`)
+      .attr("dy", "0.35em")
+      .attr("fill", "white")
+      .style("text-anchor", "middle")
+      .text(d => d.data.label);
+  </script>
 </body>
 </html>
