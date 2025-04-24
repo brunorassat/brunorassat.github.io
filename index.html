@@ -1,76 +1,144 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bruno Rassat – Data Portfolio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        h1 {
-            margin-bottom: 5px;
-        }
-        a {
-            color: #0077cc;
-            text-decoration: none;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .project {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bruno Rassat – Data Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #ffffff;
+    }
+    header {
+      padding: 2rem;
+      text-align: center;
+      background: #1f1f1f;
+    }
+    header h1 {
+      margin-bottom: 0.2rem;
+    }
+    header p {
+      margin-top: 0;
+    }
+    nav {
+      background: #333;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .project {
+      background: #222;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+    .cube-container {
+      perspective: 800px;
+      width: 200px;
+      height: 200px;
+      margin: 3rem auto;
+    }
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spin 10s infinite linear;
+    }
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(0, 123, 255, 0.7);
+      border: 1px solid #007bff;
+    }
+    .front  { transform: translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY(90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+    .top    { transform: rotateX(90deg) translateZ(100px); }
+    .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+    @keyframes spin {
+      0%   { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #1f1f1f;
+    }
+  </style>
 </head>
 <body>
-
-<header>
+  <header>
     <h1>Bruno Rassat</h1>
     <p>Senior Data Analyst / Analytics Engineer</p>
-    <p>
-        <a href="mailto:your.email@example.com">your.email@example.com</a> | 
-        <a href="https://www.linkedin.com/in/yourprofile">LinkedIn</a> |
-        <a href="https://github.com/yourusername">GitHub</a>
-    </p>
-</header>
+  </header>
 
-<section class="section">
-    <h2>About Me</h2>
-    <p>I'm a data-driven professional with strong experience in analytics engineering, data modeling, and pipeline automation. Currently based in Vietnam and open to remote opportunities in Asia.</p>
-</section>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#cube">Cube</a>
+    <a href="resume.pdf">Resume</a>
+  </nav>
 
-<section class="section">
-    <h2>Featured Projects</h2>
+  <div class="container">
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I specialize in data engineering and analytics, transforming raw data into actionable insights. Currently based in Vietnam, open to remote opportunities.</p>
+    </section>
 
-    <div class="project">
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="project">
         <h3>Factory Data Automation</h3>
-        <p>Built a full data collection and processing system from SharePoint, SCADA, and website forms using Power Automate + Python + DBT. Enabled end-to-end traceability and live dashboards.</p>
-    </div>
-
-    <div class="project">
+        <p>Developed an end-to-end data pipeline using Power Automate, Python, and dbt.</p>
+      </div>
+      <div class="project">
         <h3>Entobel Analytics Stack</h3>
-        <p>Invented and built the entire analytics department at Entobel. Introduced dbt, standardized metrics, and drove operational efficiency through clear reporting.</p>
-    </div>
+        <p>Launched Entobel’s analytics department, built data models and dashboards, and standardized reporting across teams.</p>
+      </div>
+    </section>
 
-</section>
+    <section id="cube">
+      <h2>Spinning Cube</h2>
+      <div class="cube-container">
+        <div class="cube">
+          <div class="face front"></div>
+          <div class="face back"></div>
+          <div class="face right"></div>
+          <div class="face left"></div>
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-<section class="section">
-    <h2>Resume</h2>
-    <p><a href="resume.pdf" download>Download Resume (PDF)</a></p>
-</section>
-
+  <footer>
+    <p>Connect with me: 
+      <a href="mailto:bruno.rassat@entobel.com" style="color: #00aaff">Email</a> | 
+      <a href="https://linkedin.com/in/yourprofile" style="color: #00aaff">LinkedIn</a> | 
+      <a href="https://github.com/yourusername" style="color: #00aaff">GitHub</a>
+    </p>
+  </footer>
 </body>
 </html>
